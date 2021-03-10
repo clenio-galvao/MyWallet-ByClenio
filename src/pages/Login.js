@@ -111,7 +111,7 @@ function Login(props) {
   return (
     <div className="login">
       <div className="d-flex justify-content-center w-100 h-100">
-        <div className="Login card">
+        <div className="card">
           <div className="card-header"><h3>Sign In</h3></div>
           <div className="card-body">
             <form>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropsType from 'prop-types';
 import { AuthContext } from '../auth/AuthContext';
 import { cadastro as cadastroAction } from '../actions';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 function Cadastro(props) {
   const initialEstado = {
@@ -161,9 +161,9 @@ function Cadastro(props) {
   const { email, password, desabilitaBotao } = estado;
   const { cadastro, history } = props;
   return (
-    <div className="login">
+    <div className="cadastro">
       <div className="d-flex justify-content-center w-100 h-100">
-        <div className="Login card">
+        <div className="card">
           <div className="card-header"><h3>Sign Up</h3></div>
           <div className="card-body">
             <form>

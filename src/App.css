@@ -57,11 +57,20 @@ padding: 0;
 }
 
 .card{
-height: 300px;
+height: 360px;
 margin-top: auto;
 margin-bottom: auto;
 width: 400px;
 background-color: rgba(0,0,0,0.5) !important;
+}
+
+.cadastro {
+  height: 100%;
+  background-image: url('./imgs/6-dicas-para-poupar-dinheiro-confre-de-porquinho.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .login {
