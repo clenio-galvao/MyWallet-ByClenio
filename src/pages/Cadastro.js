@@ -95,14 +95,18 @@ function Cadastro(props) {
 
   const emailRender = () => {
     return (
-      <div>
-        <div className="formField">
+      <div className="input-group form-group d-flex flex-column">
+        <div className="d-flex flex-row">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
           <input
             type="text"
+            className="form-control"
             onChange={(e) => {
               validateEmail(e.target.value);
             }}
-            placeholder="email"
+            placeholder="username"
             data-testid="email-input"
           />
         </div>
@@ -114,9 +118,13 @@ function Cadastro(props) {
   const passwordRender = () => {
     return (
       <div>
-        <div className="formField">
+        <div className="input-group form-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text"><i className="fas fa-key"></i></span>
+          </div>
           <input
             type="password"
+            className="form-control"
             onChange={ (e) => {
               validatePassword(e.target.value);
             } }
@@ -132,9 +140,13 @@ function Cadastro(props) {
   const passwordRepetRender = () => {
     return (
       <div>
-        <div className="formField">
+        <div className="input-group form-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text"><i className="fas fa-key"></i></span>
+          </div>
           <input
             type="password"
+            className="form-control"
             onChange={ (e) => {
               validatePasswordRepet(e.target.value);
             } }
@@ -149,23 +161,30 @@ function Cadastro(props) {
   const { email, password, desabilitaBotao } = estado;
   const { cadastro, history } = props;
   return (
-    <div className="Login">
-      <section className="login-inputs">
-        <>Cadastro</>
-        { emailRender() }
-        { passwordRender() }
-        { passwordRepetRender() }
-      </section>
-      <div className="button">
-        <button
-          type="button"
-          disabled={ desabilitaBotao }
-          onClick={ () => {
-            cadastro({ email, password, history });
-          } }
-        >
-          Entrar
-        </button>
+    <div className="login">
+      <div className="d-flex justify-content-center w-100 h-100">
+        <div className="Login card">
+          <div className="card-header"><h3>Sign Up</h3></div>
+          <div className="card-body">
+            <form>
+              { emailRender() }
+              { passwordRender() }
+              { passwordRepetRender() }
+              <div className="button">
+                <button
+                  type="button"
+                  disabled={ desabilitaBotao }
+                  className="btn float-right login_btn"
+                  onClick={ () => {
+                    cadastro({ email, password, history });
+                  } }
+                >
+                  Cadastro
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );
