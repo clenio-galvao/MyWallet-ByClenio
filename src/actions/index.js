@@ -9,7 +9,7 @@ export const login = (value) => {
       await authConfig
         .auth()
         .signInWithEmailAndPassword(email, password);
-      history.push('/wallet');
+      history.push('/');
     } catch (error) {
       console.log(error);
     }
@@ -33,7 +33,7 @@ export const cadastro = (value) => {
       await authConfig
         .auth()
         .createUserWithEmailAndPassword(email, password);
-      history.push('/wallet');
+      history.push('/');
     } catch (error) {
       console.log(error);
       alert('Alguma coisa deu errado!');

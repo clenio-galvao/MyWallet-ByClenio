@@ -8,7 +8,7 @@ export const PrivateRoute = (props) => {
   return (
     <Route
       render={(routeProps) =>
-        user ? <RouteComponent {...routeProps} /> : <Redirect to="/" />
+        user ? <RouteComponent {...routeProps} /> : <Redirect to="/login" />
       }
       {...other}
     />

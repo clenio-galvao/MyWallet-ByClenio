@@ -22,6 +22,7 @@ function Wallet(props) {
   let [total, setTotal] = useState(0);
   const [currentId, setCurrentId] = useState('');
   const { user } = useContext(AuthContext);
+  console.log(user.uid)
 
   function addOrEdit(obj) {
     if (currentId === '') {
@@ -51,7 +52,7 @@ function Wallet(props) {
   useEffect(() => {
     const { fetchCurrencies } = props;
     fetchCurrencies();
-    console.log(user.uid)
+
     firebaseDb.child(user.uid).on('value', (snapshot) => {
       if(snapshot.val() !== null) {
         setWalletUser({ ...snapshot.val() })
@@ -71,6 +72,7 @@ function Wallet(props) {
   async function getRates() {
     const currenciesResponse = await fetch('https://economia.awesomeapi.com.br/json/all');
     const currenciesJason = await currenciesResponse.json();
+    console.log(currenciesJason)
     setEstado({ ...estado, exchangeRates: currenciesJason });
   }
   

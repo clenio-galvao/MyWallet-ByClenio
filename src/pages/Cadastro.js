@@ -17,7 +17,7 @@ function Cadastro(props) {
 
   const { user } = useContext(AuthContext);
   if (user) {
-    return <Redirect to="/wallet" />;
+    return <Redirect to="/" />;
   }
 
   const validateEmail = (values) => {

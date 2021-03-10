@@ -15,8 +15,8 @@ class App extends React.Component {
       <AuthProvider>
         <Router>
           <Provider store={ store }>
-            <Route path="/" component={ Login } />
-            <PrivateRoute exact path="/wallet" component={ Wallet } />
+            <PrivateRoute exact path="/" component={ Wallet } />
+            <Route path="/login" component={ Login } />
             <Route path="/cadastro" component={ Cadastro } />
           </Provider>
         </Router>
