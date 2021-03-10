@@ -184,6 +184,14 @@ function Cadastro(props) {
               </div>
             </form>
           </div>
+          <div className="card-footer">
+            <div class="d-flex justify-content-center links">
+              Lembrou que tem conta?
+              <Link to="/login">
+                <p>Login</p>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>
