@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react';
 import { connect } from 'react-redux';
 import PropsType from 'prop-types';
 import { AuthContext } from '../auth/AuthContext';
-import { login as loginAction, loginUser as loginUserAction } from '../actions';
+import { login as loginAction } from '../actions';
 import { Link, Redirect } from 'react-router-dom';
 
 function Login(props) {
@@ -17,8 +17,6 @@ function Login(props) {
 
   const { user } = useContext(AuthContext);
   if (user) {
-    const { loginUser } = props;
-    loginUser(user);
     return <Redirect to="/wallet" />;
   }
 
@@ -150,12 +148,10 @@ function Login(props) {
 Login.propTypes = {
   login: PropsType.func.isRequired,
   history: PropsType.objectOf.isRequired,
-  loginUser: PropsType.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   login: (e) => dispatch(loginAction(e)),
-  loginUser: (user) => dispatch(loginUserAction(user)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
