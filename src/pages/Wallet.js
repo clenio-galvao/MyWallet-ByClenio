@@ -22,8 +22,8 @@ function Wallet(props) {
   const [walletUser, setWalletUser] = useState({});
   let [total, setTotal] = useState(0);
   const [currentId, setCurrentId] = useState('');
-
   const { user } = useContext(AuthContext);
+  console.log(user.uid)
 
   function addOrEdit(obj) {
     if (currentId === '') {
@@ -32,7 +32,7 @@ function Wallet(props) {
         (err) => {
           if (err) {
             console.log(err);
-            alert('Alguma coisa deu errado!');
+            alert('Alguma coisa deu errado não sei pq!');
           }
         }
       )
@@ -75,11 +75,15 @@ function Wallet(props) {
     return setTotal(soma)
   }, [walletUser]);
 
-  useEffect( async () => {
+  async function getRates() {
     const currenciesResponse = await fetch('https://economia.awesomeapi.com.br/json/all');
     const currenciesJason = await currenciesResponse.json();
     console.log(currenciesJason)
     setEstado({ ...estado, exchangeRates: currenciesJason });
+  }
+  
+  useEffect(  () => {
+    getRates()
   }, []);
 
   function edit(id) {
@@ -100,7 +104,7 @@ function Wallet(props) {
   }
 
   function header() {
-    const { logout, history } = props;
+    const { logout } = props;
     return (
       <header className="navbar bg-secondary topbar w-100">
         <div>My Wallet - By Clênio</div>
@@ -121,7 +125,6 @@ function Wallet(props) {
             className="btn btn-ligth"
             onClick={() => {
               logout();
-              history.push('/login')
             }}
           >
             Sair

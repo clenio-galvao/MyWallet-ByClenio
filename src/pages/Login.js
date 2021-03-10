@@ -19,7 +19,7 @@ function Login(props) {
   if (user) {
     const { loginUser } = props;
     loginUser(user);
-    return <Redirect to="/" />;
+    return <Redirect to="/wallet" />;
   }
 
   const validateImput = (e) => {

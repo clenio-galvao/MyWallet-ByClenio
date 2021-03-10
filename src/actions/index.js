@@ -13,7 +13,7 @@ export const login = (value) => {
         .then((user) => {
           return ({ type: 'LOGIN', value: user });
         });
-      history.push('/');
+      history.push('/wallet');
     } catch (error) {
       console.log(error);
     }
@@ -41,7 +41,7 @@ export const cadastro = (value) => {
         .then((user) => {
           return ({ type: 'LOGIN', value: user });
         });
-      history.push('/');
+      history.push('/wallet');
     } catch (error) {
       console.log(error);
       alert('Alguma coisa deu errado!');
