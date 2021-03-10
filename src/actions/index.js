@@ -10,13 +10,23 @@ export const login = (value) => {
       await authConfig
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .onAuthStateChanged((user) => {
+        .then((user) => {
           return ({ type: 'LOGIN', value: user });
         });
       history.push('/');
     } catch (error) {
       console.log(error);
-      alert('Alguma coisa deu errado! Verifique sua senha e email ou se tem cadastro realmente!!');
+    }
+  }
+}
+
+export const logout = () => {
+  return async () => {
+    try {
+      await authConfig.auth().signOut();
+      return ({ type: 'LOGOUT' });
+    } catch (error) {
+      console.log(error);
     }
   }
 }
@@ -27,9 +37,11 @@ export const cadastro = (value) => {
     try {
       await authConfig
         .auth()
-        .createUserWithEmailAndPassword(email, password);
+        .createUserWithEmailAndPassword(email, password)
+        .then((user) => {
+          return ({ type: 'LOGIN', value: user });
+        });
       history.push('/');
-      return ({ type: 'LOGIN', value });
     } catch (error) {
       console.log(error);
       alert('Alguma coisa deu errado!');

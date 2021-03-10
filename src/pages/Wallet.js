@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCurrencies as fetchCurrenciesAction } from '../actions';
+import { fetchCurrencies as fetchCurrenciesAction, logout as logoutAction } from '../actions';
 import Table from './Table';
-import { authConfig, firebaseDb} from '../auth/config';
+import { firebaseDb} from '../auth/config';
 import { AuthContext } from '../auth/AuthContext';
 import { loginUser as loginUserAction } from '../actions';
 
@@ -50,16 +50,9 @@ function Wallet(props) {
     }
   }
 
-  async function getRates() {
-    const currenciesResponse = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const currenciesJason = await currenciesResponse.json();
-    setEstado({ ...estado, exchangeRates: currenciesJason });
-  }
-
   useEffect(() => {
     const { fetchCurrencies } = props;
     fetchCurrencies();
-    getRates();
 
     if (user) {
       const { loginUser } = props;
@@ -76,11 +69,18 @@ function Wallet(props) {
   useEffect(() => {
     let soma = 0;
     Object.keys(walletUser).map((id) => {
-      soma += parseFloat(walletUser[id].value)
+      return soma += parseFloat(walletUser[id].value)
       * parseFloat(walletUser[id].exchangeRates[walletUser[id].currency].ask);
     });
-    setTotal(soma)
+    return setTotal(soma)
   }, [walletUser]);
+
+  useEffect( async () => {
+    const currenciesResponse = await fetch('https://economia.awesomeapi.com.br/json/all');
+    const currenciesJason = await currenciesResponse.json();
+    console.log(currenciesJason)
+    setEstado({ ...estado, exchangeRates: currenciesJason });
+  }, []);
 
   function edit(id) {
     setEstado({ ...walletUser[id] });
@@ -100,57 +100,66 @@ function Wallet(props) {
   }
 
   function header() {
+    const { logout, history } = props;
     return (
-      <header>
-        <div>TrybeWallet</div>
-        <span data-testid="total-field">{ total.toFixed(2) }</span>
-        <span data-testid="header-currency-field">BRL</span>
+      <header className="navbar bg-secondary topbar w-100">
+        <div>My Wallet - By Clênio</div>
+        <div className="d-flex align-items-center w-50 justify-content-between">
+          <div className="d-flex align-items-center w-25 justify-content-end">
+            Olá
+            <div className="ml-2" data-testid="total-field">{ `${user.email.split('@', 1)},` }</div>
+          </div>
+          <div className="d-flex align-items-center w-50 justify-content-around">
+            Você já gastou:
+            <div className="d-flex align-items-center">
+              <div data-testid="total-field">{ total.toFixed(2) }</div>
+              <div data-testid="header-currency-field" className="ml-1">BRL</div>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="btn btn-ligth"
+            onClick={() => {
+              logout();
+              history.push('/login')
+            }}
+          >
+            Sair
+          </button>
+        </div>
       </header>
     );
   }
 
   function valueInput() {
-    const { value } = estado;
-    return (
-      <label htmlFor="value-input">
-        Valor:
-        <input
-          value={ value }
-          onChange={ (e) => setEstado({ ...estado, value: e.target.value }) }
-          name="value-input"
-          type="number"
-          data-testid="value-input"
-        />
-      </label>
-    );
-  }
-
-  function descEMoedaInput() {
-    const { currencies } = props;
-    const { description, currency } = estado;
+    const { value, description } = estado;
     return (
       <>
-        <label htmlFor="description-input">
-          Com o que foi gasto?:
-          <input
-            name="description-input"
-            type="text"
-            data-testid="description-input"
-            value={ description }
-            onChange={ (e) => setEstado({ ...estado, description: e.target.value }) }
-          />
-        </label>
-        Moeda:
-        <select
-          value={ currency }
-          onChange={ (e) => setEstado({ ...estado, currency: e.target.value }) }
-          data-testid="currency-input"
-        >
-          { currencies.map((moeda, index) => (
-            <option key={ index } value={ moeda } data-testid={ moeda }>
-              { moeda }
-            </option>))}
-        </select>
+        <div className="m-2">
+          <label htmlFor="description-input" className="form-label">
+            Com o que foi gasto?
+            <input
+              name="description-input"
+              className="form-control"
+              type="text"
+              data-testid="description-input"
+              value={ description }
+              onChange={ (e) => setEstado({ ...estado, description: e.target.value }) }
+            />
+          </label>
+          <label htmlFor="value-input" className="form-label ml-2">
+            Valor:
+            <input
+              value={ value }
+              className="form-control"
+              onChange={ (e) => setEstado({ ...estado, value: e.target.value }) }
+              name="value-input"
+              type="number"
+              data-testid="value-input"
+            />
+          </label>
+        </div>
+        
       </>
     );
   }
@@ -171,38 +180,62 @@ function Wallet(props) {
   }
 
   function forms() {
-    const { isFetching } = props;
-    const { method, tag } = estado;
+    const { isFetching, currencies } = props;
+    const { method, tag, currency } = estado;
     return (
       isFetching ? <p> loading </p>
         : (
-          <section>
-            <form onSubmit={ handleClick }>
+          <section className="w-75">
+            <form
+              className="border m-2 d-flex flex-column align-items-center bg-light bg-gradient"
+              onSubmit={ handleClick }
+            >
               { valueInput() }
-              { descEMoedaInput() }
-              Método de pagamento:
-              <select
-                data-testid="method-input"
-                value={ method }
-                onChange={ (e) => setEstado({ ...estado, method: e.target.value }) }
-              >
-                {metPg.map((mpg, ind) => (
-                  <option key={ ind } value={ mpg }>
-                    { mpg }
-                  </option>))}
-              </select>
-              Categoria (tag):
-              <select
-                data-testid="tag-input"
-                value={ tag }
-                onChange={ (e) => setEstado({ ...estado, tag: e.target.value }) }
-              >
-                {tags.map((categ, ind) => (
-                  <option key={ ind } value={ categ }>
-                    { categ }
-                  </option>))}
-              </select>
-              <button type="submit">
+              <div className="m-2">
+                <label htmlFor="tag-input" className="form-label m-2">
+                  Método de pagamento:
+                  <select
+                    data-testid="method-input"
+                    className="form-select"
+                    value={ method }
+                    onChange={ (e) => setEstado({ ...estado, method: e.target.value }) }
+                  >
+                    {metPg.map((mpg, ind) => (
+                      <option key={ ind } value={ mpg }>
+                        { mpg }
+                      </option>))}
+                  </select>
+                </label>
+                <label htmlFor="tag-input" className="form-label">
+                  Categoria (tag):
+                  <select
+                    className="form-select form-select-lg"
+                    id="tag-input"
+                    value={ tag }
+                    onChange={ (e) => setEstado({ ...estado, tag: e.target.value }) }
+                  >
+                    {tags.map((categ, ind) => (
+                      <option key={ ind } value={ categ }>
+                        { categ }
+                      </option>))}
+                  </select>
+                </label>
+                <label className="form-label m-2">
+                  Moeda:
+                  <select
+                    value={ currency }
+                    className="form-select form-select-lg"
+                    onChange={ (e) => setEstado({ ...estado, currency: e.target.value }) }
+                    data-testid="currency-input"
+                    >
+                    { currencies.map((moeda, index) => (
+                      <option key={ index } value={ moeda } data-testid={ moeda }>
+                        { moeda }
+                      </option>))}
+                  </select>
+                </label>
+              </div>
+              <button type="submit" className="btn btn-danger m-2">
                 { !currentId ? 'Adicionar despesa' : 'Modificar despesa'}
               </button>
             </form>
@@ -212,8 +245,7 @@ function Wallet(props) {
   }
 
   return (
-    <body>
-      <button type="button" onClick={() => authConfig.auth().signOut()}>Sair</button>
+    <section className="d-flex flex-column align-items-center">
       { header() }
       { forms() }
       <Table
@@ -221,26 +253,26 @@ function Wallet(props) {
         expenses={ walletUser }
         edit={ edit }
       />
-    </body>
+    </section>
   );
 }
 
 Wallet.propTypes = {
-  email: PropTypes.func.isRequired,
   currencies: PropTypes.func.isRequired,
   isFetching: PropTypes.func.isRequired,
   fetchCurrencies: PropTypes.func.isRequired,
   expenses: PropTypes.func.isRequired,
   loginUser: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCurrencies: () => dispatch(fetchCurrenciesAction()),
   loginUser: (user) => dispatch(loginUserAction(user)),
+  logout: () => dispatch(logoutAction()),
 });
 
 const mapStateToProps = (state) => ({
-  email: state.user.email,
   currencies: state.wallet.currencies,
   isFetching: state.wallet.isFetching,
   expenses: state.wallet.expenses,

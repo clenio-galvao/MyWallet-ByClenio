@@ -7,8 +7,10 @@ function user(state = initialState, action) {
   switch (action.type) {
   case 'LOGIN':
     return action.value;
-    case 'LOGIN_EXIST_USER':
+  case 'LOGIN_EXIST_USER':
     return action.value;
+  case 'LOGOUT':
+    return { user: {} };
   default:
     return state;
   }
