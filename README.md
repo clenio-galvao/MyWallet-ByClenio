@@ -1,9 +1,11 @@
-### Fonte e motivação
+### Fonte e modificações
 Este Projeto foi desenvolvido com base em um projeto da escola de desenvolvimento web TRYBE.
 
-Utilizamos o firebase para autenticação de usuários e como banco de dados.
+Utilizamos além das tecnologias solicidas no escopo do projeto o firebase para autenticação de usuários e como banco de dados.
 
-veja o projeto em operração: https://mywallet-byclenio.web.app/
+veja o projeto em operação: https://mywallet-byclenio.web.app/
+
+Abaixo estão os quesitos solicitados no projeto inicial.
 
 ---
 
