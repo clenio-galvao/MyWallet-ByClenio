@@ -1,6 +1,9 @@
-### Termos e acordos
+### Fonte e motivação
+Este Projeto foi desenvolvido com base em um projeto da escola de desenvolvimento web TRYBE.
 
-Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e Conduta e do Manual da Pessoa Estudante da Trybe.
+Utilizamos o firebase para autenticação de usuários e como banco de dados.
+
+veja o projeto em operração: https://mywallet-byclenio.web.app/
 
 ---
 
